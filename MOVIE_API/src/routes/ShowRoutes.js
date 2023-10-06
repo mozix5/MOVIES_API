@@ -9,8 +9,8 @@ const {
 const showRouter = express.Router();
 
 showRouter.get("/", auth, getShow);
-showRouter.get("/:id/:showId", auth, isShowInCollection);
+showRouter.get("/:userId/:showId", auth, isShowInCollection);
 showRouter.post("/", auth, createShow);
-showRouter.delete("/:id", auth, deleteShow);
+showRouter.delete("/:showId", auth, deleteShow);
 
 module.exports = showRouter;
