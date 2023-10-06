@@ -37,16 +37,17 @@ const getShow = async (req, res) => {
 const isShowInCollection = async (req, res) => {
   const { userId, showId } = req.params;
   try {
-    const isShowPresent = await showModel.find({ userId, showId });
+    const isShowPresent = await showModel.findOne({ userId: userId, showId: showId });
     if (isShowPresent) {
       res.status(200).json({ isShowPresent: true });
     } else {
       res.status(200).json({ isShowPresent: false });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
 
 module.exports = { createShow, deleteShow, getShow ,isShowInCollection};
