@@ -14,11 +14,11 @@ const createShow = async (req, res) => {
     res.status(500).json({ message: "something went wrong" });
   }
 };
-const deleteShow =async (req, res) => {
+const deleteShow = async (req, res) => {
   const id = req.params.id;
   try {
-    const show= await showModel.findByIdAndRemove(id)
-    res.status(202).json(show)
+    const show = await showModel.findByIdAndRemove(id);
+    res.status(202).json(show);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "something went wrong" });
@@ -33,4 +33,20 @@ const getShow = async (req, res) => {
     res.status(500).json({ message: "something went wrong" });
   }
 };
-module.exports = { createShow, deleteShow, getShow };
+
+const isShowInCollection = async (req, res) => {
+  const { userId, showId } = req.params;
+  try {
+    const isShowPresent = await showModel.find({ userId, showId });
+    if (isShowPresent) {
+      res.status(200).json({ isShowPresent: true });
+    } else {
+      res.status(200).json({ isShowPresent: false });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+module.exports = { createShow, deleteShow, getShow ,isShowInCollection};
