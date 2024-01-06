@@ -7,6 +7,7 @@ import { useUserData } from "../context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../components/Loader";
+import Youtube from "react-youtube";
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -18,6 +19,7 @@ const MovieDetails = () => {
   const [showToast, setShowToast] = useState(false);
   const key = "88c8c02e23f2f680648798958aabb276";
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(true)
   // const userId = user?.userId;
   useEffect(() => {
     const fetchData = async () => {
@@ -35,10 +37,11 @@ const MovieDetails = () => {
           console.log("excecuted");
         }
 
-        const trailerId = data.videos.results.find(
+        const trailerId =await data.videos.results.find(
           (vid) => vid.name === "Official Trailer"
         );
-        setTrailer(trailerId || data.videos.results[0]);
+        // console.log(trailerId);
+        setTrailer(trailerId ? trailerId : data.videos.results[0]);
       } catch (error) {
         console.error(error);
       }
@@ -85,7 +88,6 @@ const MovieDetails = () => {
         console.error(error);
       }
     } else {
-      setShowToast(true);
       displayLoginNotification();
     }
   };
@@ -114,7 +116,26 @@ const MovieDetails = () => {
   // console.log(user._id);
   return (
     <div className="bg-gradient-to-t from-black h-screen w-screen flex items-center justify-center text-white">
+    {showModal ? (
+            <>
+              <div className="fixed inset-0 bg-slate-100 h-full w-full opacity-0 z-40 flex justify-center items-center">
+               
+                    {/* <>
+                      <Youtubev
+                        videoId={trailer.key}
+                        className="w-[50vh] h-[50vh] md:w-[100vh] md:h-[60vh]"
+                        opts={{
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      />
+                    </> */}
 
+                   
+              </div>
+             
+            </>
+          ) : null}
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -171,7 +192,7 @@ const MovieDetails = () => {
           </div>
           <div className="pb-3 text-sm">{movieData?.overview}</div>
           <div className="py-2 flex gap-4 items-center">
-            <button className="bg-transparent border-2 border-white rounded-3xl px-10 py-1">
+            <button onClick={()=>setShowModal(true)} className="bg-transparent border-2 border-white rounded-3xl px-10 py-1">
               Trailer
             </button>
             {isInCollection ? (
